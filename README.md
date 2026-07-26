@@ -23,7 +23,7 @@ The agent runs `npx -y @true402.dev/rugcheck 0x…` and gates on the verdict (no
 
 ## Optional: unlimited checks
 
-Set `PAYER_PRIVATE_KEY` to a Base wallet holding a little USDC to pay ~$0.005–0.01 per check over x402 (gas sponsored). Without it, the free daily trial applies.
+Set `PAYER_PRIVATE_KEY` to a Base wallet holding a little USDC to pay ~$0.005–0.01 per check over x402 (gas sponsored — the wallet needs no ETH). The key signs locally and is never sent anywhere; the client refuses to sign any single charge above **$0.10**. Without a key, the free daily trial applies.
 
 ## Links
 
