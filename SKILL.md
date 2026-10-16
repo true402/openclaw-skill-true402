@@ -1,6 +1,6 @@
 ---
 name: true402-token-safety
-description: Rug-check a Base token before trading — real buy/sell honeypot simulation, liquidity and ownership checks, plus its observed liquidity-removal history. Free daily checks; ~$0.01/call via x402 after.
+description: Rug-check a Base token before trading — real buy/sell honeypot simulation, liquidity and ownership checks, plus its observed liquidity-removal history. Free daily checks; ~$0.008/call via x402 after.
 version: 1.2.1
 metadata:
   openclaw:
