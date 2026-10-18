@@ -19,7 +19,7 @@ Ask your agent things like:
 > "Is 0x532f…42E4 safe to buy?"
 > "Rug-check this token before you snipe it."
 
-The agent runs `npx -y @true402.dev/rugcheck 0x…` and gates on the verdict (non-zero exit on AVOID or on a failed check).
+The agent runs `npx -y @true402.dev/rugcheck@1.3.4 0x…` and gates on the verdict (non-zero exit on AVOID or on a failed check).
 
 ## Optional: unlimited checks
 
@@ -49,7 +49,7 @@ still spendable by anything that can read the variable. So:
 - Live in-browser check: https://true402.dev/check
 - API reference: https://true402.dev/docs/api
 - OpenAPI: https://true402.dev/openapi.json
-- MCP server (all stalls as agent tools): `npx @true402.dev/mcp-server`
+- MCP server (all stalls as agent tools): `npx @true402.dev/mcp-server@1.3.1`
 
 ## License
 
