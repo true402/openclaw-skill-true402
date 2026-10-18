@@ -1,7 +1,7 @@
 ---
 name: true402-token-safety
 description: Rug-check a Base token before trading — real buy/sell honeypot simulation, liquidity and ownership checks, plus its observed liquidity-removal history. Free daily checks; ~$0.008/call via x402 after.
-version: 1.2.1
+version: 1.2.3
 metadata:
   openclaw:
     emoji: 🛡️
@@ -31,7 +31,7 @@ Check any Base (chain 8453) ERC-20 token — or Ethereum / BSC with `--chain eth
 Run:
 
 ```bash
-npx -y @true402.dev/rugcheck 0x<token-address>
+npx -y @true402.dev/rugcheck@1.3.4 0x<token-address>
 ```
 
 **No wallet, no signup, no API key.** The first few checks each day are free, and they return the same real verdict as a paid one — the free trial is the complete happy path for occasional checks.
@@ -41,7 +41,7 @@ Output is a verdict — `🛑 AVOID`, `⚠️ CAUTION`, or `✅ OK` — with a 0
 **Exit codes make it scriptable:** `0` on CAUTION/OK, non-zero otherwise — `1` on AVOID *or* a failed check, `2` when the free trial is used up and no key is set. Treat any non-zero as "do not buy". Use it directly as a gate:
 
 ```bash
-npx -y @true402.dev/rugcheck 0x… && <buy command>
+npx -y @true402.dev/rugcheck@1.3.4 0x… && <buy command>
 ```
 
 ## Interpreting the verdict
@@ -58,7 +58,7 @@ pool that was drained last month and then re-seeded — that token simulates per
 Add `--history` to also read true402's archive of **observed liquidity removals** on Base:
 
 ```bash
-npx -y @true402.dev/rugcheck 0x<token-address> --history
+npx -y @true402.dev/rugcheck@1.3.4 0x<token-address> --history
 ```
 
 It reports every removal event recorded against the token, and — the part that changes decisions —
@@ -80,6 +80,8 @@ If the free daily trial runs out, set `PAYER_PRIVATE_KEY` to a Base wallet holdi
 
 - The key **signs locally**. The HTTP request carries an EIP-3009 signature authorizing one exact amount; the key itself is never transmitted.
 - **Hard $0.25 cap per call.** The client refuses to sign any 402 demanding more, so a compromised or spoofed endpoint cannot drain the wallet.
+- **Pinned version.** Every command names an exact release (`@true402.dev/rugcheck@1.3.4`), so the
+  code that sees `PAYER_PRIVATE_KEY` is the reviewed release, not whatever npm serves as latest today.
 - **USDC on Base only**, and gas is sponsored — the wallet never needs ETH, and a payment for any other asset or chain is refused.
 - Never print, echo, or log the key. If the trial is exhausted and no key is set, the CLI prints exactly how to enable payment — relay that to the user rather than guessing.
 
