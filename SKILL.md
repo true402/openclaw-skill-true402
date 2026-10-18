@@ -12,12 +12,12 @@ metadata:
     envVars:
       PAYER_PRIVATE_KEY:
         required: false
-        description: Optional, for unlimited checks. A Base wallet key holding a little USDC. It signs locally and is never transmitted; the client refuses to sign any charge above $0.10, pays USDC-on-Base only, and needs no ETH (gas is sponsored). Leave unset to use the free daily trial.
+        description: Optional, for unlimited checks. A Base wallet key holding a little USDC. It signs locally and is never transmitted; the client refuses to sign any charge above $0.25, pays USDC-on-Base only, and needs no ETH (gas is sponsored). Leave unset to use the free daily trial.
 ---
 
 # true402 token safety — rug-check before you trade
 
-Check any Base (chain 8453) ERC-20 token for rug-pull and honeypot risk **before buying, sniping, or approving it**. Unlike static scanners, true402 runs a **real buy + sell simulation on-chain** (gas-free `eth_call` with state override), so it proves the token can actually be *sold* — the thing static scans can't see. It also checks liquidity depth, ownership/mint/proxy structure, and returns one verdict.
+Check any Base (chain 8453) ERC-20 token — or Ethereum / BSC with `--chain ethereum` or `--chain bsc` — for rug-pull and honeypot risk **before buying, sniping, or approving it**. Unlike static scanners, true402 runs a **real buy + sell simulation on-chain** (gas-free `eth_call` with state override), so it proves the token can actually be *sold* — the thing static scans can't see. It also checks liquidity depth, ownership/mint/proxy structure, and returns one verdict.
 
 ## When to use this skill
 
@@ -38,7 +38,7 @@ npx -y @true402.dev/rugcheck 0x<token-address>
 
 Output is a verdict — `🛑 AVOID`, `⚠️ CAUTION`, or `✅ OK` — with a 0–100 score and the specific on-chain reasons (e.g. "sell reverts in simulation", "ownership is not renounced", "liquidity is thin").
 
-**Exit codes make it scriptable:** `1` on AVOID, `0` on CAUTION/OK, `2` on error. Use it directly as a gate:
+**Exit codes make it scriptable:** `0` on CAUTION/OK, non-zero otherwise — `1` on AVOID *or* a failed check, `2` when the free trial is used up and no key is set. Treat any non-zero as "do not buy". Use it directly as a gate:
 
 ```bash
 npx -y @true402.dev/rugcheck 0x… && <buy command>
@@ -79,7 +79,7 @@ If the free daily trial runs out, set `PAYER_PRIVATE_KEY` to a Base wallet holdi
 **What this skill does with your wallet — and what it cannot do:**
 
 - The key **signs locally**. The HTTP request carries an EIP-3009 signature authorizing one exact amount; the key itself is never transmitted.
-- **Hard $0.10 cap per call.** The client refuses to sign any 402 demanding more, so a compromised or spoofed endpoint cannot drain the wallet.
+- **Hard $0.25 cap per call.** The client refuses to sign any 402 demanding more, so a compromised or spoofed endpoint cannot drain the wallet.
 - **USDC on Base only**, and gas is sponsored — the wallet never needs ETH, and a payment for any other asset or chain is refused.
 - Never print, echo, or log the key. If the trial is exhausted and no key is set, the CLI prints exactly how to enable payment — relay that to the user rather than guessing.
 
@@ -88,7 +88,7 @@ If the free daily trial runs out, set `PAYER_PRIVATE_KEY` to a Base wallet holdi
 Every endpoint answers with HTTP 402 + machine-readable payment terms when unpaid; all are keyless:
 
 ```bash
-# Full token report (simulation + liquidity + structure + deployer, one verdict)
+# Full token report (simulation + liquidity + structure + recent rug activity, one verdict)
 curl -X POST https://true402.dev/api/v1/base/token-report -H 'content-type: application/json' -d '{"token":"0x…"}'
 # Who deployed it — wallet age + fresh-throwaway flag
 curl -X POST https://true402.dev/api/v1/base/deployer-check -H 'content-type: application/json' -d '{"token":"0x…"}'
