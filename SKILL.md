@@ -1,7 +1,7 @@
 ---
 name: true402-token-safety
 description: Rug-check a Base token before trading — real buy/sell honeypot simulation, liquidity and ownership checks, plus its observed liquidity-removal history. Free daily checks; ~$0.008/call via x402 after.
-version: 1.2.3
+version: 1.2.4
 metadata:
   openclaw:
     emoji: 🛡️
@@ -99,6 +99,20 @@ curl -X POST https://true402.dev/api/v1/base/address-safety -H 'content-type: ap
 ```
 
 Full catalog: https://true402.dev/api/v1/services · OpenAPI: https://true402.dev/openapi.json · Docs: https://true402.dev/docs/api
+
+## Make it automatic (OpenClaw plugin)
+
+This skill works when the agent remembers to follow it. To make the check unskippable, install the
+**true402 swap guard** plugin: it hooks every tool call that buys a token, from any trading skill or
+MCP tool, and blocks the trade when the token is a honeypot or a rug in progress. A sale is never
+blocked, and a token that cannot be checked passes by default.
+
+```bash
+openclaw plugins install clawhub:@true402.dev/openclaw-swap-guard
+```
+
+Same free daily checks; paid checks use a separate `TRUE402_PAYER_PRIVATE_KEY` and are capped at
+$0.02 each and 50 a day. Source: https://github.com/true402/openclaw-swap-guard
 
 ## For the human in the loop
 
