@@ -12,6 +12,14 @@ openclaw skills install true402-token-safety
 
 or copy this directory to `~/.openclaw/workspace/skills/true402-token-safety/`.
 
+## Make it automatic
+
+A skill is guidance the agent can forget. The [true402 swap guard](https://github.com/true402/openclaw-swap-guard) plugin runs the same check on **every** tool call that buys a token and blocks honeypots and rugs:
+
+```bash
+openclaw plugins install clawhub:@true402.dev/openclaw-swap-guard
+```
+
 ## Use
 
 Ask your agent things like:
