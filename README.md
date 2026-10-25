@@ -57,7 +57,7 @@ still spendable by anything that can read the variable. So:
 - Live in-browser check: https://true402.dev/check
 - API reference: https://true402.dev/docs/api
 - OpenAPI: https://true402.dev/openapi.json
-- MCP server (all stalls as agent tools): `npx @true402.dev/mcp-server@1.3.1`
+- MCP server (all stalls as agent tools): `npx @true402.dev/mcp-server@1.3.2`
 
 ## License
 
